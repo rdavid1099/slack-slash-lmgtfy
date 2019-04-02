@@ -87,6 +87,16 @@ router.post('/api/putData', (req, res) => {
   });
 });
 
+// this is our create methid
+// this method adds new data in our database
+router.post('/api/lmgtfy_convert', (req, res) => {
+  console.log(req);
+  // data.save(err => {
+  //   if (err) return res.json({ success: false, error: err });
+  //   return res.json({ success: true });
+  // });
+});
+
 app.use(router);
 
 // Serve up React frontend for all other requests
