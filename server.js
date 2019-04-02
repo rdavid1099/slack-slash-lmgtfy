@@ -91,9 +91,18 @@ router.post('/api/putData', (req, res) => {
 router.post('/api/lmgtfy_convert', (req, res) => {
   const { text, token } = req.body;
   if (token === process.env.SLACK_TOKEN) {
+    const lmgtfy_url = `http://lmgtfy.com/?q=${encodeURI(text)}`;
     return res.json({
       response_type: 'in_channel',
-      text: `http://lmgtfy.com/?q=${text}`,
+      attachments: [
+        {
+          fallback: `Let's take a look at what Google says about "${text}"`,
+          color: '#36a64f',
+          title: `Let's see what Google says about ${text}`,
+          title_link: lmgtfy_url,
+          text: lmgtfy_url,
+        },
+      ],
     });
   } else {
     return res.json({
