@@ -89,23 +89,18 @@ router.post('/api/putData', (req, res) => {
 
 // this is our convert method
 router.post('/api/lmgtfy_convert', (req, res) => {
-// body: {
-//   token: 'fBJnBXWH0CT3uv6XttJF96P7',
-//   team_id: 'TG601L9M0',
-//   team_domain: 'familyforevertrip',
-//   channel_id: 'DG605PM98',
-//   channel_name: 'directmessage',
-//   user_id: 'UG72JMSDD',
-//   user_name: 'rdavid1099',
-//   command: '/google',
-//   text: 'stuff',
-//   response_url: 'https://hooks.slack.com/commands/TG601L9M0/597802823732/ig6fxYio1KOixioMNY8PjJox'
-// }
-  const { text } = req.body;
-  return res.json({
-    response_type: 'in_channel',
-    text
-  });
+  const { text, token } = req.body;
+  if (token === process.env.SLACK_TOKEN) {
+    return res.json({
+      response_type: 'in_channel',
+      text: `http://lmgtfy.com/?q=${text}`,
+    });
+  } else {
+    return res.json({
+      success: false,
+      error: 'INVALID TOKEN',
+    });
+  }
 });
 
 app.use(router);
