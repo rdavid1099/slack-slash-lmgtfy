@@ -20,7 +20,7 @@ class App extends React.Component {
   }
 
   getDataFromDb = () => {
-    fetch("http://localhost:3001/api/getData")
+    fetch("/api/getData")
       .then(data => data.json())
       .then(res => this.setState({ data: res.data }));
   };
@@ -32,7 +32,7 @@ class App extends React.Component {
       ++idToBeAdded;
     }
 
-    axios.post("http://localhost:3001/api/putData", {
+    axios.post("/api/putData", {
       id: idToBeAdded,
       message: message
     });
@@ -46,7 +46,7 @@ class App extends React.Component {
       }
     });
 
-    axios.delete("http://localhost:3001/api/deleteData", {
+    axios.delete("/api/deleteData", {
       data: {
         id: objIdToDelete
       }
@@ -61,13 +61,14 @@ class App extends React.Component {
       }
     });
 
-    axios.post("http://localhost:3001/api/updateData", {
+    axios.post("/api/updateData", {
       id: objIdToUpdate,
       update: { message: updateToApply }
     });
   };
 
   render() {
+    const { data } = this.state;
     return (
       <div className="App">
         <header className="App-header">
@@ -76,6 +77,17 @@ class App extends React.Component {
         <p>
           Wrapping <a href="http://lmgtfy.com/">LMGTFY</a> using a simple slack command.
         </p>
+        <ul>
+          {data.length <= 0
+            ? "NO DB ENTRIES YET"
+            : data.map(dat => (
+                <li style={{ padding: "10px" }} key={data.message}>
+                  <span style={{ color: "gray" }}> id: </span> {dat.id} <br />
+                  <span style={{ color: "gray" }}> data: </span>
+                  {dat.message}
+                </li>
+              ))}
+        </ul>
       </div>
     );
   }
